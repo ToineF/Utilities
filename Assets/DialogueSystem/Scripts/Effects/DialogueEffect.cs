@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 namespace DialogueSystem
 {
@@ -16,6 +17,9 @@ namespace DialogueSystem
             Index = index;
         }
 
-        public void Update() {}
+        public virtual IEnumerator Update(DialogueManager manager)
+        {
+            yield break;
+        }
     }
 }

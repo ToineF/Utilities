@@ -8,16 +8,14 @@ namespace DialogueSystem
     public struct TextEffect
     {
         public VisualExtensions.ColorSquare Colors;
-        public float CharacterApparitionTime;
 
         [Header("Typewriter Params")]
         public float ScaleTime;
         public VectorExtensions.Vector3AnimationCurve ScaleAnimations;
 
-        public TextEffect(VisualExtensions.ColorSquare colors, float apparitionTime, float scaleTime, VectorExtensions.Vector3AnimationCurve scaleAnimations)
+        public TextEffect(VisualExtensions.ColorSquare colors, float scaleTime, VectorExtensions.Vector3AnimationCurve scaleAnimations)
         {
             Colors = colors;
-            CharacterApparitionTime = apparitionTime;
             ScaleTime = scaleTime;
             ScaleAnimations = scaleAnimations;
         }

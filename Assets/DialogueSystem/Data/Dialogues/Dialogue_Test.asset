@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: Dialogue_Test
   m_EditorClassIdentifier: 
   _lines:
-  - Text: NORMAL <TFX=Shake>SHAKE <TFX=Shake2>SHAKE2 <TFX=Shake>SHAKE AGAIN <TFX=Base>NORMAL
-      AGAIN
+  - Text: '<TFX=Shake><S=0,01>Hey! <W=0,5>You! <W=0,5>
+
+      <S=0,55><TFX=Base>.....<W=0,5><S=0,04>Oh,
+      <W=0,1>nevermind.'
+    SpriteOverride: {fileID: 0}
+  - Text: <S=0,05>NORMAL <TFX=Shake>SHAKE <TFX=Shake2>SHAKE2 <TFX=Shake><S=0,01>SHAKE
+      AGAIN <TFX=Base><W=1>NORMAL AGAIN
     SpriteOverride: {fileID: 0}
   - Text: NORMAL <TFX=Shake>SHAKE <TFX=Shake2>SHAKE2
     SpriteOverride: {fileID: 0}

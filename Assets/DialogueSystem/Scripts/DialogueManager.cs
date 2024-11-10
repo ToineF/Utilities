@@ -47,6 +47,8 @@ namespace DialogueSystem
                 UpdateDialogueEndArrow();
             }
         }
+        public int CurrentCharIndex => _currentCharIndex;
+        [field:SerializeField] public float CurrentPlaySpeed { get; set; }
 
         [SerializeField] private TMP_Text _dialogueTextboxText;
 
@@ -57,20 +59,17 @@ namespace DialogueSystem
         [SerializeField] private Animator _isDialoguePlayingArrow;
         [SerializeField] private string _isDialoguePlayingArrowCondition;
 
-        [Header("Text Effects")] [SerializeField]
-        private TextEffectData _hiddenEffectData;
-        [SerializeField] private TextEffectData _baseEffectData;
-        [SerializeField] private TextEffectDatasList _textEffectsToCheck;
+        [Header("Text Effects")]
+        [SerializeField] private TMP_Effect _tmpEffect;
         
-        private float[] _characterApparitionTimers;
         private Dialogue _currentDialogue;
         private int _currentTextIndex;
         private int _currentCharIndex;
         private float _currentCharWaitTime;
         private bool _hasCurrentTextEnded = true;
         private Coroutine _writingCharactersCoroutine;
-        private TextEffectData[] _textEffects;
         private DialogueEffect[] _dialogueEffects;
+        private DialogueEffectsFactory _effectsFactory = new DialogueEffectsFactory();
 
         public void SetNewDialogue(Dialogue newDialogue)
         {
@@ -104,8 +103,7 @@ namespace DialogueSystem
             else
             {
                 string finalText = GetTextEffectsInString(currentText, out DialogueEffect[] dialogueEffects);
-                IntitializeTextEffects(finalText, dialogueEffects);
-                _dialogueEffects = dialogueEffects;
+                InitEffects(finalText, dialogueEffects);
                 _writingCharactersCoroutine = StartCoroutine(WriteEachCharacter(_dialogueTextboxText, finalText, _currentDialogue.CharacterData));
             }
         }
@@ -121,13 +119,13 @@ namespace DialogueSystem
             HasCurrentTextEnded = false;
             dialogueTextbox.text = finalText;
             _currentCharIndex = 0;
-            _characterApparitionTimers = new float[finalText.Length];
 
             for (int i = 0; i < finalText.Length; i++)
             {
+                yield return UpdateEffects(i, _dialogueEffects);
+                
                 _currentCharIndex = i;
                 char c = finalText[i];
-                _currentCharWaitTime = _baseEffectData.TextEffect.CharacterApparitionTime;
 
                 if (characterData.SoundsTalk.Length > 0)
                 {
@@ -137,10 +135,7 @@ namespace DialogueSystem
                         //_feedbackManager?.AudioManager?.PlayClip(sound);
                     }
                 }
-
-                UpdateEffects(i, _dialogueEffects);
-
-                yield return new WaitForSeconds(_textEffects[_currentCharIndex]?.TextEffect.CharacterApparitionTime ?? _currentCharWaitTime);
+                yield return new WaitForSeconds(CurrentPlaySpeed);
             }
 
             HasCurrentTextEnded = true;
@@ -164,114 +159,46 @@ namespace DialogueSystem
             //_isDialoguePlayingArrow.SetBool(_isDialoguePlayingArrowCondition, HasCurrentTextEnded);
         }
 
-        private void LateUpdate()
-        {
-            PlayTextAnimation();
-        }
-        
-        private void PlayTextAnimation()
-        {
-            _dialogueTextboxText.ForceMeshUpdate();
-            TMP_TextInfo textInfo = _dialogueTextboxText.textInfo;
-            bool[] visitedCharacters = new bool[textInfo.characterCount];
-
-            if (_textEffects == null) return;
-
-            for (int i = 0; i < _textEffects.Length; i++)
-            {
-                bool isCharacterHidden = _currentCharIndex < i && _currentCharIndex != -1; 
-                var data = isCharacterHidden ? _hiddenEffectData : _textEffects[i];
-
-                if (data == null) continue;
-                
-                if (isCharacterHidden == false) _characterApparitionTimers[i] += Time.deltaTime;
-                TMP_CharacterInfo charInfo = textInfo.characterInfo[i];
-
-
-                if (!charInfo.isVisible) continue;
-                if (visitedCharacters[i]) continue;
-                visitedCharacters[i] = true;
-
-                TMP_MeshInfo meshInfo = textInfo.meshInfo[charInfo.materialReferenceIndex];
-                Vector3 upCenterPoint = new Vector2((meshInfo.vertices[charInfo.vertexIndex].x + meshInfo.vertices[charInfo.vertexIndex + 2].x) / 2, meshInfo.vertices[charInfo.vertexIndex].y);
-                Vector3 middleCenterPoint = new Vector2((meshInfo.vertices[charInfo.vertexIndex].x + meshInfo.vertices[charInfo.vertexIndex + 2].x) / 2, (meshInfo.vertices[charInfo.vertexIndex].y + meshInfo.vertices[charInfo.vertexIndex].y + 1) / 2);
-                Vector3 charData = data.CharMathDisplacement.GetTotalFunction(middleCenterPoint);
-                Vector3 characterScale = Vector3.zero;
-                if (isCharacterHidden == false) characterScale = data.TextEffect.GetCurrentScale(_characterApparitionTimers[i]);
-
-                for (int j = 0; j < 4; j++)
-                {
-                    int index = charInfo.vertexIndex + j;
-                    Vector3 origin = meshInfo.vertices[index];
-                    meshInfo.vertices[index] = origin + data.VertexMathDisplacement.GetTotalFunction(origin) + charData;
-                    meshInfo.colors32[index] = data.TextEffect.Colors[j];
-                    if (isCharacterHidden == false) meshInfo.vertices[index] += data.TextEffect.ReturnAddedScaledPosition(meshInfo.vertices[index], characterScale, middleCenterPoint);
-                }
-            }
-
-            for (int i = 0; i < textInfo.meshInfo.Length; i++)
-            {
-                TMP_MeshInfo meshInfo = textInfo.meshInfo[i];
-                meshInfo.mesh.vertices = meshInfo.vertices;
-                meshInfo.mesh.colors32 = meshInfo.colors32;
-                _dialogueTextboxText.UpdateGeometry(meshInfo.mesh, i);
-            }
-        }
-
         private string GetTextEffectsInString(string text, out DialogueEffect[] dialogueEffects)
         {
             string newText = text;
-            
+
             // Split Text and get effects
             string[] effects = Regex.Matches(newText, @"<.*?=.*?>").Select(m => m.Value).ToArray();
             dialogueEffects = new DialogueEffect[effects.Length];
-            
+
             for (int i = 0; i < effects.Length; i++)
             {
                 var effect = effects[i];
                 var input = effect.Substring(1, effect.Length - 2).Split('=');
-                
+
                 var type = input[0];
                 var value = input[1];
                 var index = newText.IndexOf(effect, StringComparison.Ordinal);
-                
+
                 dialogueEffects[i] = new DialogueEffect(type, value, index);
-                
+
                 newText = newText.ReplaceFirst(effect, String.Empty);
             }
-            
+
             return newText;
         }
 
-        private void IntitializeTextEffects(string newText, DialogueEffect[] dialogueEffects)
+        private void InitEffects(string text, DialogueEffect[] dialogueEffects)
         {
-            _textEffects = new TextEffectData[newText.Length];
-            for (int i = 0; i < _textEffects.Length; i++)
+            _tmpEffect.Initialize(text, dialogueEffects, this);
+            _dialogueEffects = new DialogueEffect[dialogueEffects.Length];
+            for (int i = 0; i < dialogueEffects.Length; i++)
             {
-                _textEffects[i] = _baseEffectData;
-            }
-            
-            // Apply effect at each character
-            foreach (TextEffectData data in _textEffectsToCheck.Datas)
-            {
-                for (int i = 0; i < dialogueEffects.Length; i++)
-                {
-                    if (data.Key == dialogueEffects[i].Value)
-                    {
-                        for (int j = dialogueEffects[i].Index; j < (i < dialogueEffects.Length - 1 ? dialogueEffects[i+1].Index : newText.Length); j++)
-                        {
-                            _textEffects[j] = data;
-                        }
-                    }
-                }
+                _dialogueEffects[i] = _effectsFactory.CreateDialogueEffect(dialogueEffects[i].Type, dialogueEffects[i].Value, dialogueEffects[i].Index);
             }
         }
-        
-        private void UpdateEffects(int index, DialogueEffect[] dialogueEffects)
+
+        private IEnumerator UpdateEffects(int index, DialogueEffect[] dialogueEffects)
         {
             foreach (var effect in dialogueEffects)
             {
-                if (effect.Index == index) effect.Update();
+                if (effect.Index == index)  yield return effect.Update(this);
             }
         }
     }
