@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aa07bbdcb2733a4ba276d32647a03eb, type: 3}
+  m_Name: Dialogue_Test
+  m_EditorClassIdentifier: 
+  _lines:
+  - Text: NORMAL <TFX=Shake>SHAKE <TFX=Shake2>SHAKE2 <TFX=Shake>SHAKE AGAIN <TFX=Base>NORMAL
+      AGAIN
+    SpriteOverride: {fileID: 0}
+  - Text: NORMAL <TFX=Shake>SHAKE <TFX=Shake2>SHAKE2
+    SpriteOverride: {fileID: 0}
+  - Text: <TFX=Wobbly>dfdsfsdfsdfsd
+    SpriteOverride: {fileID: 0}
+  - Text: <TFX=VeryWeird>yeeeeeeeeeeeeeeeeah!
+    SpriteOverride: {fileID: 0}
+  - Text: 12
+    SpriteOverride: {fileID: 0}
+  - Text: 34
+    SpriteOverride: {fileID: 0}
+  - Text: 56
+    SpriteOverride: {fileID: 0}
+  - Text: one two 3 a bc
+    SpriteOverride: {fileID: 0}
+  - Text: i am really talking a lot, aren't I?
+    SpriteOverride: {fileID: 0}
+  - Text: This is a long sentence to ensure the linebreaks work correctly.
+    SpriteOverride: {fileID: 0}
+  characterData: {fileID: 11400000, guid: 4c22f83a3f923164cbe83e4fa276d104, type: 2}

@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 668e35f8e65581049825dbd12a45b3db, type: 3}
+  m_Name: TFX_Hidden
+  m_EditorClassIdentifier: 
+  Role: 0
+  Key: HIDDEN
+  TextEffect:
+    MinRange: 0
+    MaxRange: -1
+    Colors:
+      TopLeft: {r: 0, g: 0, b: 0, a: 0}
+      TopRight: {r: 0, g: 0, b: 0, a: 0}
+      BottomLeft: {r: 0, g: 0, b: 0, a: 0}
+      BottomRight: {r: 0, g: 0, b: 0, a: 0}
+    TypeWriterRange: 1
+    CharacterApparitionTime: 0
+    ScaleTime: 0
+    ScaleAnimations:
+      x:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      y:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      z:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  VertexMathDisplacement:
+    x:
+      Function: 3
+      TimeAmount: 0
+      AddedOriginAmount: {x: -1, y: 0, z: 0}
+      AddedRandomAmount:
+        Min: {x: 0, y: 0, z: 0}
+        Max: {x: 0, y: 0, z: 0}
+      GlobalMultiplier: 1
+    y:
+      Function: 3
+      TimeAmount: 0
+      AddedOriginAmount: {x: 0, y: -1, z: 0}
+      AddedRandomAmount:
+        Min: {x: 0, y: 0, z: 0}
+        Max: {x: 0, y: 0, z: 0}
+      GlobalMultiplier: 1
+    z:
+      Function: 3
+      TimeAmount: 0
+      AddedOriginAmount: {x: 0, y: 0, z: -1}
+      AddedRandomAmount:
+        Min: {x: 0, y: 0, z: 0}
+        Max: {x: 0, y: 0, z: 0}
+      GlobalMultiplier: 1
+  CharMathDisplacement:
+    x:
+      Function: 0
+      TimeAmount: 0
+      AddedOriginAmount: {x: 0, y: 0, z: 0}
+      AddedRandomAmount:
+        Min: {x: 0, y: 0, z: 0}
+        Max: {x: 0, y: 0, z: 0}
+      GlobalMultiplier: 0
+    y:
+      Function: 0
+      TimeAmount: 0
+      AddedOriginAmount: {x: 0, y: 0, z: 0}
+      AddedRandomAmount:
+        Min: {x: 0, y: 0, z: 0}
+        Max: {x: 0, y: 0, z: 0}
+      GlobalMultiplier: 0
+    z:
+      Function: 0
+      TimeAmount: 0
+      AddedOriginAmount: {x: 0, y: 0, z: 0}
+      AddedRandomAmount:
+        Min: {x: 0, y: 0, z: 0}
+        Max: {x: 0, y: 0, z: 0}
+      GlobalMultiplier: 0

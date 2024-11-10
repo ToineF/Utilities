@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a48c9ba7d1b4fa0be2b5d5a3c72e17e, type: 3}
+  m_Name: _TFX_LIST
+  m_EditorClassIdentifier: 
+  <Datas>k__BackingField:
+  - {fileID: 11400000, guid: e7c38f84d3566e743a63d1e120cfde6a, type: 2}
+  - {fileID: 11400000, guid: 09d2a7ddefe3d55428f736add9ffb890, type: 2}
+  - {fileID: 11400000, guid: 7e084e14c58096d4f9b8fc22d2e5aaf7, type: 2}
+  - {fileID: 11400000, guid: f6d3f7f9a24240d4581b07e7506f63d7, type: 2}

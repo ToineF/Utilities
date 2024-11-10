@@ -1,0 +1,155 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 668e35f8e65581049825dbd12a45b3db, type: 3}
+  m_Name: TFX_VeryWeird
+  m_EditorClassIdentifier: 
+  Key: VeryWeird
+  TextEffect:
+    Colors:
+      TopLeft: {r: 1, g: 1, b: 1, a: 1}
+      TopRight: {r: 1, g: 1, b: 1, a: 1}
+      BottomLeft: {r: 1, g: 1, b: 1, a: 1}
+      BottomRight: {r: 1, g: 1, b: 1, a: 1}
+    CharacterApparitionTime: 0.02
+    ScaleTime: 0.4
+    ScaleAnimations:
+      x:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      y:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: -2.030968
+          outSlope: -2.030968
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 0.48611107
+          value: 0.012723982
+          inSlope: -0.05489123
+          outSlope: -0.05489123
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0.33333334
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 1.9211855
+          outSlope: 1.9211855
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0.33333334
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      z:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 34
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+  VertexMathDisplacement:
+    x:
+      Function: 2
+      TimeAmount: 10
+      AddedOriginAmount: {x: 0, y: 0, z: 0}
+      AddedRandomAmount:
+        Min: {x: 0, y: 0, z: 0}
+        Max: {x: 0, y: 0, z: 0}
+      GlobalMultiplier: 0
+    y:
+      Function: 2
+      TimeAmount: -3
+      AddedOriginAmount: {x: 0.002, y: 0, z: 0}
+      AddedRandomAmount:
+        Min: {x: 0, y: 0, z: 0}
+        Max: {x: 0, y: 0.2, z: 0}
+      GlobalMultiplier: 40
+    z:
+      Function: 0
+      TimeAmount: 0
+      AddedOriginAmount: {x: 0, y: 0, z: 0}
+      AddedRandomAmount:
+        Min: {x: 0, y: 0, z: 0}
+        Max: {x: 0, y: 0, z: 0}
+      GlobalMultiplier: 0
+  CharMathDisplacement:
+    x:
+      Function: 0
+      TimeAmount: 100
+      AddedOriginAmount: {x: 0, y: 0, z: 0}
+      AddedRandomAmount:
+        Min: {x: 5, y: 0, z: 0}
+        Max: {x: 0, y: 0, z: 0}
+      GlobalMultiplier: 0
+    y:
+      Function: 0
+      TimeAmount: 5
+      AddedOriginAmount: {x: 0.03, y: 0, z: 0}
+      AddedRandomAmount:
+        Min: {x: 0, y: 0, z: 0}
+        Max: {x: 0, y: 0, z: 0}
+      GlobalMultiplier: 0
+    z:
+      Function: 0
+      TimeAmount: 0
+      AddedOriginAmount: {x: 0, y: 0, z: 0}
+      AddedRandomAmount:
+        Min: {x: 0, y: 0, z: 0}
+        Max: {x: 0, y: 0, z: 0}
+      GlobalMultiplier: 0
