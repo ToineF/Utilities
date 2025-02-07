@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 //using DG.Tweening;
 using System;
+using UnityEditor;
 
 namespace AntoineFoucault.Utilities
 {
@@ -773,11 +774,18 @@ namespace AntoineFoucault.Utilities
         public static Vector2 topRight(this Bounds bounds) => new Vector2(bounds.max.x, bounds.max.y);
         public static Vector2 bottomLeft(this Bounds bounds) => new Vector2(bounds.min.x, bounds.min.y);
         public static Vector2 bottomRight(this Bounds bounds) => new Vector2(bounds.max.x, bounds.min.y);
+
+        public static void GetCapsulePoints(this CapsuleCollider collider, out Vector3 p1, out Vector3 p2)
+        {
+            Vector3 direction = collider.direction == 0 ? Vector3.right : collider.direction == 1 ? Vector3.up : Vector3.forward;
+            p1 = collider.transform.position + collider.center + direction * -collider.height * 0.5F;
+            p2 = p1 + direction * collider.height;
+        }
     }
     
     public static class VisualExtensions
     {
-        public static void SetAlpha( this SpriteRenderer renderer , float alpha )
+        public static void SetAlpha(this SpriteRenderer renderer, float alpha)
         {
             renderer.color = new Color(renderer.color.r, renderer.color.g, renderer.color.b, alpha);
         }
@@ -817,8 +825,8 @@ namespace AntoineFoucault.Utilities
         {
             Gizmos.DrawRay(pos, direction);
 
-            Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + arrowHeadAngle, 0) * new Vector3(0, 0, 1);
-            Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - arrowHeadAngle, 0) * new Vector3(0, 0, 1);
+            Vector3 right = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 + arrowHeadAngle, 0) * Vector3.forward;
+            Vector3 left = Quaternion.LookRotation(direction) * Quaternion.Euler(0, 180 - arrowHeadAngle, 0) * Vector3.forward;
             Gizmos.DrawRay(pos + direction, right * arrowHeadLength);
             Gizmos.DrawRay(pos + direction, left * arrowHeadLength);
         }
@@ -828,26 +836,49 @@ namespace AntoineFoucault.Utilities
             Gizmos.color = color;
             DrawArrow(pos, direction, arrowHeadLength, arrowHeadAngle);
         }
-
-        public static void DrawCircle(Vector3 center, Vector3 rotation, float radius, float thickness, Color? color = null)
+        public static void DrawSphereCast(Vector3 origin, float radius, Vector3 direction, float maxDistance, Color color = default)
         {
-            Gizmos.color = color ?? Color.white;
-
-            Matrix4x4 oldMatrix = Gizmos.matrix;
-            Gizmos.matrix = Matrix4x4.TRS(center, Quaternion.Euler(rotation), new Vector3(1, thickness, 1));
-            Gizmos.DrawSphere(Vector3.zero, radius);
-            Gizmos.matrix = oldMatrix;
+            if (color == default) color = Color.white;
+            Gizmos.color = color;
+            Gizmos.DrawWireSphere(origin, radius);
+            Gizmos.DrawLine(origin, origin + direction * maxDistance);
+            Gizmos.DrawWireSphere(origin + direction * maxDistance, radius);
         }
 
-        public static void DrawWireCircle(Vector3 center, Vector3 rotation, float radius, float thickness, Color? color = null)
+#if UNITY_EDITOR
+        public static void DrawWireCircle(Vector3 center, Vector3 rotation, float radius, float thickness = 1f, Color color = default)
         {
-            Gizmos.color = color ?? Color.white;
-
-            Matrix4x4 oldMatrix = Gizmos.matrix;
-            Gizmos.matrix = Matrix4x4.TRS(center, Quaternion.Euler(rotation), new Vector3(1, thickness, 1));
-            Gizmos.DrawWireSphere(Vector3.zero, radius);
-            Gizmos.matrix = oldMatrix;
+            if (color == default) color = Color.white;
+            Handles.color = color;
+            Handles.DrawWireDisc(center, rotation, radius, thickness);
         }
+
+        public static void DrawWireCapsule(Vector3 _pos, Quaternion _rot, float _radius, float _height, Color _color = default(Color))
+        {
+            if (_color != default(Color))
+                Handles.color = _color;
+            Matrix4x4 angleMatrix = Matrix4x4.TRS(_pos, _rot, Handles.matrix.lossyScale);
+            using (new Handles.DrawingScope(angleMatrix))
+            {
+                var pointOffset = (_height - (_radius * 2)) / 2;
+
+                //draw sideways
+                Handles.DrawWireArc(Vector3.up * pointOffset, Vector3.left, Vector3.back, -180, _radius);
+                Handles.DrawLine(new Vector3(0, pointOffset, -_radius), new Vector3(0, -pointOffset, -_radius));
+                Handles.DrawLine(new Vector3(0, pointOffset, _radius), new Vector3(0, -pointOffset, _radius));
+                Handles.DrawWireArc(Vector3.down * pointOffset, Vector3.left, Vector3.back, 180, _radius);
+                //draw frontways
+                Handles.DrawWireArc(Vector3.up * pointOffset, Vector3.back, Vector3.left, 180, _radius);
+                Handles.DrawLine(new Vector3(-_radius, pointOffset, 0), new Vector3(-_radius, -pointOffset, 0));
+                Handles.DrawLine(new Vector3(_radius, pointOffset, 0), new Vector3(_radius, -pointOffset, 0));
+                Handles.DrawWireArc(Vector3.down * pointOffset, Vector3.back, Vector3.left, -180, _radius);
+                //draw center
+                Handles.DrawWireDisc(Vector3.up * pointOffset, Vector3.up, _radius);
+                Handles.DrawWireDisc(Vector3.down * pointOffset, Vector3.up, _radius);
+
+            }
+        }
+#endif
     }
 
     public static class StringExtensions
